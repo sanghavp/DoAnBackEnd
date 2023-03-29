@@ -3,12 +3,13 @@ const { password, objectId, phoneNumber } = require('./custom.validation');
 
 const createUser = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
+    email: Joi.string().email().allow("", null),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
     role: Joi.string().required().valid('user', 'admin'),
-    phone: Joi.string().custom(phoneNumber),
-    gender: Joi.string().valid('male', 'female')
+    phone: Joi.string().custom(phoneNumber).allow("", null),
+    gender: Joi.string().valid('male', 'female'),
+    userName: Joi.string().min(5)
   }),
 };
 
@@ -34,9 +35,12 @@ const updateUser = {
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
+      email: Joi.string().email().allow(null, ""),
       password: Joi.string().custom(password),
       name: Joi.string(),
+      phone: Joi.string().custom(phoneNumber).allow("", null),
+      gender: Joi.string().valid('male', 'female'),
+      userName: Joi.string().min(5)
     })
     .min(1),
 };

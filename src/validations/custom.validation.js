@@ -7,7 +7,7 @@ const objectId = (value, helpers) => {
 
 const phoneNumber = (value, helpers) => {
   if (!value.match(/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\b/)) {
-    return helpers.message('"{{#label}}" must be a valid mongo id');
+    return helpers.message('"{{#label}}" must be a valid Viet Nam phone number');
   }
   return value;
 }
