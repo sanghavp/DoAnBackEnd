@@ -1,38 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const PlaceValidation = require('../../validations/Place.validation');
-const PlaceController = require('../../controllers/Place.controller');
+const organizationsValidation = require('../../validations/organizations.validation');
+const organizationsController = require('../../controllers/organizations.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('managePlaces'), validate(PlaceValidation.createPlace), PlaceController.createPlace)
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlaces), PlaceController.getPlaces);
+  .post(auth('manageOrganizationss'), validate(organizationsValidation.createOrganizations), organizationsController.createOrganizations)
+  .get(auth('getOrganizationss'), validate(organizationsValidation.getOrganizationss), organizationsController.getOrganizationss);
 
 router
-  .route('/:PlaceId')
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlace), PlaceController.getPlace)
-  .put(auth('managePlaces'), validate(PlaceValidation.updatePlace), PlaceController.updatePlace)
-  .delete(auth('managePlaces'), validate(PlaceValidation.deletePlace), PlaceController.deletePlace);
+  .route('/:organizationsId')
+  .get(auth('getOrganizationss'), validate(organizationsValidation.getOrganizations), organizationsController.getOrganizations)
+  .patch(auth('manageOrganizationss'), validate(organizationsValidation.updateOrganizations), organizationsController.updateOrganizations)
+  .delete(auth('manageOrganizationss'), validate(organizationsValidation.deleteOrganizations), organizationsController.deleteOrganizations);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Places
- *   description: Place management and retrieval
+ *   name: Organizationss
+ *   description: Organizations management and retrieval
  */
 
 /**
  * @swagger
- * /Places:
+ * /organizationss:
  *   post:
- *     summary: Create a Place
- *     description: Can create Places.
- *     tags: [Places]
+ *     summary: Create a organizations
+ *     description: Can create organizationss.
+ *     tags: [Organizationss]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -51,12 +51,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: organizations type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: organizations model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -86,7 +86,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Organizations'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -95,9 +95,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all Places
- *     description: Retrieve all Places.
- *     tags: [Places]
+ *     summary: Get all organizationss
+ *     description: Retrieve all organizationss.
+ *     tags: [Organizationss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -112,7 +112,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of Places
+ *         description: Maximum number of organizationss
  *       - in: query
  *         name: page
  *         schema:
@@ -131,7 +131,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Place'
+ *                     $ref: '#/components/schemas/Organizations'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -152,11 +152,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /Places/{id}:
+ * /organizationss/{id}:
  *   get:
- *     summary: Get a Place
- *     description: fetch Places by id
- *     tags: [Places]
+ *     summary: Get a organizations
+ *     description: fetch Organizationss by id
+ *     tags: [Organizationss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -165,14 +165,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Organizations id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Organizations'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -181,9 +181,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a Place
- *     description: Update Places.
- *     tags: [Places]
+ *     summary: Update a organizations
+ *     description: Update organizationss.
+ *     tags: [Organizationss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -192,7 +192,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Organizations id
  *     requestBody:
  *       required: true
  *       content:
@@ -204,12 +204,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: organizations type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: organizations model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -239,7 +239,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Organizations'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -250,9 +250,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a Place
- *     description: Delete Places.
- *     tags: [Places]
+ *     summary: Delete a organizations
+ *     description: Delete organizationss.
+ *     tags: [Organizationss]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -261,7 +261,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Organizations id
  *     responses:
  *       "200":
  *         description: No content

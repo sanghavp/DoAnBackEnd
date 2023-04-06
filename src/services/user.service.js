@@ -8,7 +8,7 @@ const ApiError = require('../utils/ApiError');
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isUserNameTaken(userBody.userName)) {
+  if (await User.isUserNameTaken(userBody.user_name)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'user name already taken');
   }
   return User.create(userBody);
@@ -34,6 +34,7 @@ const queryUsers = async (filter, options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
+  // const org = 
   return User.findById(id);
 };
 
@@ -42,8 +43,8 @@ const getUserById = async (id) => {
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByUserName = async (userName) => {
-  return User.findOne({ userName });
+const getUserByUserName = async (user_name) => {
+  return User.findOne({ user_name });
 };
 
 /**
@@ -57,8 +58,8 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+  if (updateBody.user_name && (await User.isUserNameTaken(updateBody.email, userId))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Ten tai khoan khong dung!');
   }
   Object.assign(user, updateBody);
   await user.save();

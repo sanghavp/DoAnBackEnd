@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    userName: {
+    user_name: {
       type: String,
       lowercase: true,
       trim: true,
@@ -49,6 +49,10 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
+    orgId: {
+      type: mongoose.Schema.ObjectId,
+      required: true
+    },
     role: {
       type: String,
       enum: roles,
@@ -74,8 +78,8 @@ userSchema.plugin(paginate);
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isUserNameTaken = async function (userName, excludeUserId) {
-  const user = await this.findOne({ userName, _id: { $ne: excludeUserId } });
+userSchema.statics.isUserNameTaken = async function (user_name, excludeUserId) {
+  const user = await this.findOne({ user_name, _id: { $ne: excludeUserId } });
   return !!user;
 };
 

@@ -11,8 +11,8 @@ const { tokenTypes } = require('../config/tokens');
  * @param {string} password
  * @returns {Promise<User>}
  */
-const loginUserWithUserNameAndPassword = async (userName, password) => {
-  const user = await userService.getUserByUserName(userName);
+const loginUserWithUserNameAndPassword = async (user_name, password) => {
+  const user = await userService.getUserByUserName(user_name);
   if (!user || !(await user.isPasswordMatch(password))) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
@@ -40,6 +40,7 @@ const logout = async (refreshToken) => {
 const refreshAuth = async (refreshToken) => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
+    console.log("refreshTokenDoc", refreshTokenDoc);
     const user = await userService.getUserById(refreshTokenDoc.user);
     if (!user) {
       throw new Error();

@@ -1,38 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const PlaceValidation = require('../../validations/Place.validation');
-const PlaceController = require('../../controllers/Place.controller');
+const checkinValidation = require('../../validations/checkin.validation');
+const checkinController = require('../../controllers/checkin.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('managePlaces'), validate(PlaceValidation.createPlace), PlaceController.createPlace)
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlaces), PlaceController.getPlaces);
+  .post(auth('manageCheckins'), validate(checkinValidation.createCheckin), checkinController.createCheckin)
+  .get(auth('getCheckins'), validate(checkinValidation.getCheckins), checkinController.getCheckins);
 
 router
-  .route('/:PlaceId')
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlace), PlaceController.getPlace)
-  .put(auth('managePlaces'), validate(PlaceValidation.updatePlace), PlaceController.updatePlace)
-  .delete(auth('managePlaces'), validate(PlaceValidation.deletePlace), PlaceController.deletePlace);
+  .route('/:checkinId')
+  .get(auth('getCheckins'), validate(checkinValidation.getCheckin), checkinController.getCheckin)
+  .put(auth('manageCheckins'), validate(checkinValidation.updateCheckin), checkinController.updateCheckin)
+  .delete(auth('manageCheckins'), validate(checkinValidation.deleteCheckin), checkinController.deleteCheckin);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Places
- *   description: Place management and retrieval
+ *   name: Checkins
+ *   description: Checkin management and retrieval
  */
 
 /**
  * @swagger
- * /Places:
+ * /checkins:
  *   post:
- *     summary: Create a Place
- *     description: Can create Places.
- *     tags: [Places]
+ *     summary: Create a checkin
+ *     description: Can create checkins.
+ *     tags: [Checkins]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -51,12 +51,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: checkin type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: checkin model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -86,7 +86,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Checkin'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -95,9 +95,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all Places
- *     description: Retrieve all Places.
- *     tags: [Places]
+ *     summary: Get all checkins
+ *     description: Retrieve all checkins.
+ *     tags: [Checkins]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -112,7 +112,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of Places
+ *         description: Maximum number of checkins
  *       - in: query
  *         name: page
  *         schema:
@@ -131,7 +131,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Place'
+ *                     $ref: '#/components/schemas/Checkin'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -152,11 +152,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /Places/{id}:
+ * /checkins/{id}:
  *   get:
- *     summary: Get a Place
- *     description: fetch Places by id
- *     tags: [Places]
+ *     summary: Get a checkin
+ *     description: fetch Checkins by id
+ *     tags: [Checkins]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -165,14 +165,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Checkin id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Checkin'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -181,9 +181,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a Place
- *     description: Update Places.
- *     tags: [Places]
+ *     summary: Update a checkin
+ *     description: Update checkins.
+ *     tags: [Checkins]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -192,7 +192,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Checkin id
  *     requestBody:
  *       required: true
  *       content:
@@ -204,12 +204,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: checkin type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: checkin model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -239,7 +239,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Place'
+ *                $ref: '#/components/schemas/Checkin'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -250,9 +250,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a Place
- *     description: Delete Places.
- *     tags: [Places]
+ *     summary: Delete a checkin
+ *     description: Delete checkins.
+ *     tags: [Checkins]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -261,7 +261,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Place id
+ *         description: Checkin id
  *     responses:
  *       "200":
  *         description: No content

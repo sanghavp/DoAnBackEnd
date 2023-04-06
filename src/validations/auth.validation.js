@@ -7,14 +7,14 @@ const register = {
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
     role: Joi.string().valid("admin", "user"),
-    userName: Joi.string(),
-    phone: Joi.string().custom(phoneNumber).allow("", null)
+    user_name: Joi.string(),
+    phone: Joi.string().custom(phoneNumber).allow('', null)
   }),
 };
 
 const login = {
   body: Joi.object().keys({
-    userName: Joi.string().required(),
+    user_name: Joi.string().required(),
     password: Joi.string().required(),
   }),
 };
