@@ -6,26 +6,29 @@ const organizationsSchema = mongoose.Schema(
 		code: {
 			type: String,
 			required: true,
+			unique: true,
 			trim: true,
 		},
 		name: {
 			type: String,
 			required: true,
+			unique: true,
 			trim: true,
 		},
 		fullname: {
 			type: String,
 			required: true,
+			// unique: true,
 			trim: true,
 		},
 		email: {
 			type: String,
-			required: true,
+			// required: true,
 			trim: true,
 		},
 		phone: {
 			type: String,
-			required: true,
+			// required: true,
 			trim: true,
 		},
 		leader: {
@@ -35,7 +38,7 @@ const organizationsSchema = mongoose.Schema(
 		},
 		place: {
 			type: Array,
-			required: true,
+			// required: true,
 			trim: true,
 		},
 	},

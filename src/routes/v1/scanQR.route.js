@@ -1,38 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const organizationsValidation = require('../../validations/organizations.validation');
-const organizationsController = require('../../controllers/organizations.controller');
+const scanQRValidation = require('../../validations/scanQR.validation');
+const scanQRController = require('../../controllers/scanQR.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageOrganizations'), validate(organizationsValidation.createOrganizations), organizationsController.createOrganizations)
-  .get( validate(organizationsValidation.getOrganizationss), organizationsController.getOrganizationss);
+  .post(auth('manageScanQRs'), validate(scanQRValidation.createScanQR), scanQRController.createScanQR)
+  .get(auth('getScanQRs'), validate(scanQRValidation.getScanQRs), scanQRController.getScanQRs);
 
 router
-  .route('/:organizationsId')
-  .get(auth('getOrganizationss'), validate(organizationsValidation.getOrganizations), organizationsController.getOrganizations)
-  .patch(auth('manageOrganizations'), validate(organizationsValidation.updateOrganizations), organizationsController.updateOrganizations)
-  .delete(auth('manageOrganizations'), validate(organizationsValidation.deleteOrganizations), organizationsController.deleteOrganizations);
+  .route('/:scanQRId')
+  .get(auth('getScanQRs'), validate(scanQRValidation.getScanQR), scanQRController.getScanQR)
+  .patch(auth('manageScanQRs'), validate(scanQRValidation.updateScanQR), scanQRController.updateScanQR)
+  .delete(auth('manageScanQRs'), validate(scanQRValidation.deleteScanQR), scanQRController.deleteScanQR);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Organizations
- *   description: Organizations management and retrieval
+ *   name: ScanQRs
+ *   description: ScanQR management and retrieval
  */
 
 /**
  * @swagger
- * /organizationss:
+ * /scanQRs:
  *   post:
- *     summary: Create a organizations
- *     description: Can create organizationss.
- *     tags: [Organizations]
+ *     summary: Create a scanQR
+ *     description: Can create scanQRs.
+ *     tags: [ScanQRs]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -51,12 +51,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: organizations type (car, var, bike, etc...)
+ *                 description: scanQR type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: organizations model (308, Demio, Aqua, etc...)
+ *                 description: scanQR model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -86,7 +86,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Organizations'
+ *                $ref: '#/components/schemas/ScanQR'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -95,9 +95,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all organizationss
- *     description: Retrieve all organizationss.
- *     tags: [Organizations]
+ *     summary: Get all scanQRs
+ *     description: Retrieve all scanQRs.
+ *     tags: [ScanQRs]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -112,7 +112,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of organizationss
+ *         description: Maximum number of scanQRs
  *       - in: query
  *         name: page
  *         schema:
@@ -131,7 +131,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/Organizations'
+ *                     $ref: '#/components/schemas/ScanQR'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -152,11 +152,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /organizationss/{id}:
+ * /scanQRs/{id}:
  *   get:
- *     summary: Get a organizations
- *     description: fetch Organizations by id
- *     tags: [Organizations]
+ *     summary: Get a scanQR
+ *     description: fetch ScanQRs by id
+ *     tags: [ScanQRs]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -165,14 +165,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Organizations id
+ *         description: ScanQR id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Organizations'
+ *                $ref: '#/components/schemas/ScanQR'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -181,9 +181,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a organizations
- *     description: Update organizationss.
- *     tags: [Organizations]
+ *     summary: Update a scanQR
+ *     description: Update scanQRs.
+ *     tags: [ScanQRs]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -192,7 +192,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Organizations id
+ *         description: ScanQR id
  *     requestBody:
  *       required: true
  *       content:
@@ -204,12 +204,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: organizations type (car, var, bike, etc...)
+ *                 description: scanQR type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: organizations model (308, Demio, Aqua, etc...)
+ *                 description: scanQR model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -239,7 +239,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/Organizations'
+ *                $ref: '#/components/schemas/ScanQR'
  *       "400":
  *         $ref: '#/components/responses/Duplicate'
  *       "401":
@@ -250,9 +250,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a organizations
- *     description: Delete organizationss.
- *     tags: [Organizations]
+ *     summary: Delete a scanQR
+ *     description: Delete scanQRs.
+ *     tags: [ScanQRs]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -261,7 +261,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: Organizations id
+ *         description: ScanQR id
  *     responses:
  *       "200":
  *         description: No content

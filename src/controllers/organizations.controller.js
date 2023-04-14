@@ -5,6 +5,7 @@ const catchAsync = require('../utils/catchAsync');
 const { organizationsService } = require('../services');
 
 const createOrganizations = catchAsync(async (req, res) => {
+  // console.log({req})
   const organizations = await organizationsService.createOrganizations(req.body);
   res.status(httpStatus.CREATED).send(organizations);
 });

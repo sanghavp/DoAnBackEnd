@@ -2,35 +2,35 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { PlaceService } = require('../services');
+const { placeService } = require('../services');
 
 const createPlace = catchAsync(async (req, res) => {
-  const Place = await PlaceService.createPlace(req.body);
-  res.status(httpStatus.CREATED).send(Place);
+  const place = await placeService.createPlace(req.body);
+  res.status(httpStatus.CREATED).send(place);
 });
 
 const getPlaces = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['time', 'lat', 'long', 'name', 'r', 'address']);
+  const filter = pick(req.query, ['time', 'lat', 'long', 'name', 'r', 'address', 'orgId)']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await PlaceService.queryPlaces(filter, options);
+  const result = await placeService.queryPlaces(filter, options);
   res.send(result);
 });
 
 const getPlace = catchAsync(async (req, res) => {
-  const Place = await PlaceService.getPlaceById(req.params.PlaceId);
-  if (!Place) {
+  const place = await placeService.getPlaceById(req.params.placeId);
+  if (!place) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Place not found');
   }
-  res.send(Place);
+  res.send(place);
 });
 
 const updatePlace = catchAsync(async (req, res) => {
-  const Place = await PlaceService.updatePlaceById(req.params.PlaceId, req.body);
-  res.send(Place);
+  const place = await placeService.updatePlaceById(req.params.placeId, req.body);
+  res.send(place);
 });
 
 const deletePlace = catchAsync(async (req, res) => {
-  await PlaceService.deletePlaceById(req.params.PlaceId);
+  await placeService.deletePlaceById(req.params.placeId);
   res.status(httpStatus.NO_CONTENT).send();
 });
 

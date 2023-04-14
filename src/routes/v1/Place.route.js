@@ -1,21 +1,21 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const PlaceValidation = require('../../validations/Place.validation');
-const PlaceController = require('../../controllers/Place.controller');
+const placeValidation = require('../../validations/place.validation');
+const placeController = require('../../controllers/place.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('managePlaces'), validate(PlaceValidation.createPlace), PlaceController.createPlace)
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlaces), PlaceController.getPlaces);
+  .post(auth('managePlaces'), validate(placeValidation.createPlace), placeController.createPlace)
+  .get(auth('getPlaces'), validate(placeValidation.getPlaces), placeController.getPlaces);
 
 router
-  .route('/:PlaceId')
-  .get(auth('getPlaces'), validate(PlaceValidation.getPlace), PlaceController.getPlace)
-  .put(auth('managePlaces'), validate(PlaceValidation.updatePlace), PlaceController.updatePlace)
-  .delete(auth('managePlaces'), validate(PlaceValidation.deletePlace), PlaceController.deletePlace);
+  .route('/:placeId')
+  .get(auth('getPlaces'), validate(placeValidation.getPlace), placeController.getPlace)
+  .patch(auth('managePlaces'), validate(placeValidation.updatePlace), placeController.updatePlace)
+  .delete(auth('managePlaces'), validate(placeValidation.deletePlace), placeController.deletePlace);
 
 module.exports = router;
 
@@ -28,10 +28,10 @@ module.exports = router;
 
 /**
  * @swagger
- * /Places:
+ * /places:
  *   post:
- *     summary: Create a Place
- *     description: Can create Places.
+ *     summary: Create a place
+ *     description: Can create places.
  *     tags: [Places]
  *     security:
  *       - bearerAuth: []
@@ -51,12 +51,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: place type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: place model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -95,8 +95,8 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all Places
- *     description: Retrieve all Places.
+ *     summary: Get all places
+ *     description: Retrieve all places.
  *     tags: [Places]
  *     security:
  *       - bearerAuth: []
@@ -112,7 +112,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of Places
+ *         description: Maximum number of places
  *       - in: query
  *         name: page
  *         schema:
@@ -152,9 +152,9 @@ module.exports = router;
 
 /**
  * @swagger
- * /Places/{id}:
+ * /places/{id}:
  *   get:
- *     summary: Get a Place
+ *     summary: Get a place
  *     description: fetch Places by id
  *     tags: [Places]
  *     security:
@@ -181,8 +181,8 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a Place
- *     description: Update Places.
+ *     summary: Update a place
+ *     description: Update places.
  *     tags: [Places]
  *     security:
  *       - bearerAuth: []
@@ -204,12 +204,12 @@ module.exports = router;
  *                 type: string
  *               type:
  *                 type: string
- *                 description: Place type (car, var, bike, etc...)
+ *                 description: place type (car, var, bike, etc...)
  *               manufacturer:
  *                 type: string
  *               model:
  *                 type: string
- *                 description: Place model (308, Demio, Aqua, etc...)
+ *                 description: place model (308, Demio, Aqua, etc...)
  *               numberplate:
  *                  type: string
  *               makeyear:
@@ -250,8 +250,8 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a Place
- *     description: Delete Places.
+ *     summary: Delete a place
+ *     description: Delete places.
  *     tags: [Places]
  *     security:
  *       - bearerAuth: []

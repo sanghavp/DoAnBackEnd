@@ -51,7 +51,7 @@ const userSchema = mongoose.Schema(
     },
     orgId: {
       type: mongoose.Schema.ObjectId,
-      required: true
+      // required: true
     },
     role: {
       type: String,
@@ -90,6 +90,7 @@ userSchema.statics.isUserNameTaken = async function (user_name, excludeUserId) {
  */
 userSchema.methods.isPasswordMatch = async function (password) {
   const user = this;
+  
   return bcrypt.compare(password, user.password);
 };
 

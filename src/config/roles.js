@@ -7,8 +7,10 @@ const allRoles = {
     'getPlaces',
     'manageCheckins',
     'getCheckins',
-    'manageOrganizationss',
-    'getOrganizationss',
+    'manageOrganizations',
+    'getOrganizations',
+    'manageScanQRs',
+    'getScanQRs',
   ],
 };
 

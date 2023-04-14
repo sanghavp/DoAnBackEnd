@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const PlaceSchema = mongoose.Schema(
+const placeSchema = mongoose.Schema(
   {
 		time: {
 			type: String,
@@ -24,7 +24,7 @@ const PlaceSchema = mongoose.Schema(
 			trim: true,
 		},
 		r: {
-			type: String,
+			type: Number,
 			required: true,
 			trim: true,
 		},
@@ -33,6 +33,33 @@ const PlaceSchema = mongoose.Schema(
 			required: true,
 			trim: true,
 		},
+		orgId: {
+			type: mongoose.Schema.ObjectId,
+			required: true,
+			trim: true,
+		},
+		minimumTime: {
+			type: Number,
+			required: false,
+			default: 1
+		},
+		status: {
+			type: String,
+			required: true,
+			default: "out"
+		},
+		time_start: {
+			type: String,
+			required: false
+		},
+		lastCheckin: {
+			type: Date,
+			required: false
+		},
+		tooLate: {
+			type: Number,
+			required: false
+		},
 	},
   {
     timestamps: true,
@@ -40,12 +67,12 @@ const PlaceSchema = mongoose.Schema(
 );
 
 // add plugin that converts mongoose to json
-PlaceSchema.plugin(toJSON);
-PlaceSchema.plugin(paginate);
+placeSchema.plugin(toJSON);
+placeSchema.plugin(paginate);
 
 /**
  * @typedef Place
  */
-const Place = mongoose.model('Place', PlaceSchema);
+const Place = mongoose.model('Place', placeSchema);
 
 module.exports = Place;

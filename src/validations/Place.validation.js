@@ -8,8 +8,9 @@ const createPlace = {
 		lat: Joi.number(),
 		long: Joi.number(),
 		name: Joi.string(),
-		r: Joi.string(),
+		r: Joi.number(),
 		address: Joi.string(),
+		orgId: Joi.string(),
 	}
   ),
 };
@@ -21,21 +22,22 @@ const getPlaces = {
 		lat: Joi.number(),
 		long: Joi.number(),
 		name: Joi.string(),
-		r: Joi.string(),
+		r: Joi.number(),
 		address: Joi.string(),
+		orgId: Joi.string(),
 	}
   ),
 };
 
 const getPlace = {
   params: Joi.object().keys({
-    PlaceId: Joi.string().custom(objectId),
+    placeId: Joi.string().custom(objectId),
   }),
 };
 
 const updatePlace = {
   params: Joi.object().keys({
-    PlaceId: Joi.required().custom(objectId),
+    placeId: Joi.required().custom(objectId),
   }),
   body: Joi.object()
     .keys({
@@ -43,15 +45,16 @@ const updatePlace = {
 		lat: Joi.number(),
 		long: Joi.number(),
 		name: Joi.string(),
-		r: Joi.string(),
+		r: Joi.number(),
 		address: Joi.string(),
+		orgId: Joi.string(),
 	})
     .min(1),
 };
 
 const deletePlace = {
   params: Joi.object().keys({
-    PlaceId: Joi.string().custom(objectId),
+    placeId: Joi.string().custom(objectId),
   }),
 };
 
