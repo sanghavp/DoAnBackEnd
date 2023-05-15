@@ -2,7 +2,7 @@ const express = require('express');
 const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
-const PlaceRoute = require('./Place.route');
+const placeRoute = require('./place.route');
 const checkinRoute = require("./checkin.route");
 const organizationsRoute = require("./organizations.route");
 const scanQRRoute = require('./scanQR.route')
@@ -21,7 +21,7 @@ const defaultRoutes = [
   },
   {
     path: "/places",
-    route: PlaceRoute,
+    route: placeRoute,
   },
   {
     path: "/checkin",
