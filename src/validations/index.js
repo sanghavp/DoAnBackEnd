@@ -5,3 +5,4 @@ module.exports.checkinValidation = require("./checkin.validation");
 module.exports.organizationsValidation = require("./organizations.validation");
 module.exports.placeValidation = require("./place.validation");
 module.exports.scanQRValidation = require("./scanQR.validation");
+module.exports.shiftValidation = require("./shift.validation");

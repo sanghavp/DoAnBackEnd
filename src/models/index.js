@@ -5,3 +5,4 @@ module.exports.Place = require("./place.model");
 module.exports.Checkin = require("./checkin.model");
 module.exports.Organizations = require("./organizations.model");
 module.exports.ScanQR = require("./scanQR.model");
+module.exports.Shift = require("./shift.model");

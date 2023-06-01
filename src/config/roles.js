@@ -11,6 +11,8 @@ const allRoles = {
     'getOrganizations',
     'manageScanQRs',
     'getScanQRs',
+    'manageShifts',
+    'getShifts'
   ],
 };
 

@@ -5,3 +5,4 @@ module.exports.checkinController = require("./checkin.controller");
 module.exports.organizationsController = require("./organizations.controller");
 module.exports.placeController = require("./place.controller");
 module.exports.scanQRController = require("./scanQR.controller");
+module.exports.shiftController = require("./shift.controller");
