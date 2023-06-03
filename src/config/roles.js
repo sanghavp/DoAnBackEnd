@@ -2,13 +2,14 @@ const allRoles = {
   // trong trường hợp những api nào không cần đăng nhập vẫn show hoặc vẫn có thể xem thì sẽ không cần auth()
 
   // Bảo vệ
-  user: ['getPlaces'],
+  user: ['getPlaces', 'getOrganizations'],
   // Đội trưởng đội bảo vệ
   leader: [
     'managePlaces',
     'getPlaces',
     'manageCheckins',
     'getCheckins',
+    'getOrganizations',
   ],
   // Quản lí khu vực
   manager: [
@@ -18,7 +19,6 @@ const allRoles = {
     'getPlaces',
     'manageCheckins',
     'getCheckins',
-    'manageOrganizations',
     'getOrganizations',
     'manageScanQRs',
     'getScanQRs',
@@ -31,7 +31,9 @@ const allRoles = {
     'manageUsers',
     'managePlaces',
     'getPlaces',
-    
+    'getShifts',
+    'manageShifts',
+    'getOrganizations',
   ],
   // DEV - Quản trị hệ thống
   superadmin: [
