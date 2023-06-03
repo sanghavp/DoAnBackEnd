@@ -1,6 +1,17 @@
 const allRoles = {
-  user: ['getUsers', 'manageUsers', 'managePlaces', 'getPlaces'],
-  admin: [
+  // trong trường hợp những api nào không cần đăng nhập vẫn show hoặc vẫn có thể xem thì sẽ không cần auth()
+
+  // Bảo vệ
+  user: ['getPlaces'],
+  // Đội trưởng đội bảo vệ
+  leader: [
+    'managePlaces',
+    'getPlaces',
+    'manageCheckins',
+    'getCheckins',
+  ],
+  // Quản lí khu vực
+  manager: [
     'getUsers',
     'manageUsers',
     'managePlaces',
@@ -12,6 +23,19 @@ const allRoles = {
     'manageScanQRs',
     'getScanQRs',
   ],
+  // Giám đốc
+  admin: [
+    'getUsers',
+    'manageUsers',
+    'managePlaces',
+    'getPlaces',
+    
+  ],
+  // DEV - Quản trị hệ thống
+  superadmin: [
+    'manageOrganizations',
+    'getOrganizations',
+  ]
 };
 
 const roles = Object.keys(allRoles);
