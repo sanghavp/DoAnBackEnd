@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
-const placeSchema = mongoose.Schema(
+const placeSchema = mongoose.Schema( 
   {
 		time: {
 			type: String,

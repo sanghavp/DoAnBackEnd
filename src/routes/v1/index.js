@@ -5,7 +5,8 @@ const docsRoute = require('./docs.route');
 const placeRoute = require('./place.route');
 const checkinRoute = require("./checkin.route");
 const organizationsRoute = require("./organizations.route");
-const scanQRRoute = require('./scanQR.route')
+const scanQRRoute = require('./scanQR.route');
+const shiftRoute = require("./shift.route");
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -34,6 +35,10 @@ const defaultRoutes = [
   {
     path: "/scan-qr",
     route: scanQRRoute,
+  },
+  {
+    path: "/shift",
+    route: shiftRoute,
   },
 ];
 
