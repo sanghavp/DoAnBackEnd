@@ -19,14 +19,8 @@ const createShift = {
 const getShifts = {
   query: Joi.object().keys(
       {
-		name: Joi.string(),
-		time_start: Joi.date(),
-		time_end: Joi.number(),
-		from_date: Joi.date(),
-		to_date: Joi.date(),
-		code: Joi.string(),
-		max_time_late: Joi.number(),
-		description: Joi.string(),
+		page: Joi.number(),
+		limit: Joi.number()
 	}
   ),
 };
