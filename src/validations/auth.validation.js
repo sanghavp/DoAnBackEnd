@@ -6,15 +6,15 @@ const register = {
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
     name: Joi.string().required(),
-    role: Joi.string().valid("admin", "user"),
-    user_name: Joi.string(),
+    role: Joi.string().valid('user', 'manager', 'leader', 'admin', 'superadmin'),
+    username: Joi.string(),
     phone: Joi.string().custom(phoneNumber).allow('', null)
   }),
 };
 
 const login = {
   body: Joi.object().keys({
-    user_name: Joi.string().required(),
+    username: Joi.string().required(),
     password: Joi.string().required(),
   }),
 };

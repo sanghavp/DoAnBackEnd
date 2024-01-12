@@ -23,6 +23,8 @@ const getScanQRs = {
 		time: Joi.string(),
 		userID: Joi.string(),
 		extra: Joi.object(),
+    page: Joi.number(),
+    limit: Joi.number(),
 	}
   ),
 };

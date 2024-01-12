@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
-const { Organizations } = require('../models');
+const { Organizations, User, Place } = require('../models');
+const userService = require('./user.service');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -32,7 +33,7 @@ const queryOrganizationss = async (filter, options) => {
  * @returns {Promise<Organizations>}
  */
 const getOrganizationsById = async (id) => {
-  return Organizations.findById(id);
+  return Organizations.findById(id).populate('leader').exec();
 };
 
 /**
@@ -41,12 +42,21 @@ const getOrganizationsById = async (id) => {
  * @param {Object} updateBody
  * @returns {Promise<Organizations>}
  */
-const updateOrganizationsById = async (organizationsId, updateBody) => {
+const updateOrganizationsById = async (organizationsId, req) => {
   const organizations = await getOrganizationsById(organizationsId);
   if (!organizations) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organizations not found');
   }
-  Object.assign(organizations, updateBody);
+
+  // Cập nhật thông tin cho quản lí cũ và mới
+  if(req.body.leader) {
+    console.log(organizations.leader);
+    if(organizations.leader) {
+      userService.updateUserById(organizations.leader._id,{org_ids: [req.params.organizationsId], role: "user"});
+    }
+    userService.updateUserById(req.body.leader,{ role: "manager"});
+  }
+  Object.assign(organizations, req.body);
   await organizations.save();
   return organizations;
 };
@@ -62,6 +72,19 @@ const deleteOrganizationsById = async (organizationsId) => {
     throw new ApiError(httpStatus.NOT_FOUND, 'Organizations not found');
   }
   await organizations.remove();
+  await Place.deleteMany({org_id: organizationsId})
+  const users = await User.find({org_ids: organizations})
+  users.forEach(async user => {
+    if(user.org_ids.length == 1 && user.role != "admin") {
+      await user.remove();
+    } else if(user.org_ids.length > 1 ) {
+      user.org_ids = user.org_ids.filter(function(element) {
+        return element.toString() != organizationsId; // Chỉ giữ lại các phần tử có giá trị khác với organizationsId
+      });
+      console.log('user removed', user.org_ids);
+      await user.save();
+    }
+  })
   return organizations;
 };
 

@@ -23,7 +23,7 @@ const checkinSchema = mongoose.Schema(
 			required: true,
 			trim: true,
 		},
-		user_name: {
+		username: {
 			type: String,
 			required: true,
 			trim: true,

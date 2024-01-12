@@ -8,7 +8,7 @@ const createCheckin = {
 		time: Joi.string(),
 		place: Joi.array(),
 		status: Joi.boolean(),
-		user_name: Joi.string(),
+		username: Joi.string(),
 		ca: Joi.object(),
 	}
   ),
@@ -21,8 +21,10 @@ const getCheckins = {
 		time: Joi.string(),
 		place: Joi.array(),
 		status: Joi.boolean(),
-		user_name: Joi.string(),
+		username: Joi.string(),
 		ca: Joi.object(),
+    page: Joi.number(),
+    limit: Joi.number(),
 	}
   ),
 };
@@ -43,7 +45,7 @@ const updateCheckin = {
 		time: Joi.string(),
 		place: Joi.array(),
 		status: Joi.boolean(),
-		user_name: Joi.string(),
+		username: Joi.string(),
 		ca: Joi.object(),
 	})
     .min(1),

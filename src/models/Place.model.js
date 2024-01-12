@@ -3,11 +3,6 @@ const { toJSON, paginate } = require('./plugins');
 
 const placeSchema = mongoose.Schema( 
   {
-		time: {
-			type: String,
-			required: true,
-			trim: true,
-		},
 		lat: {
 			type: Number,
 			required: true,
@@ -33,15 +28,16 @@ const placeSchema = mongoose.Schema(
 			required: true,
 			trim: true,
 		},
-		orgId: {
+		org_id: {
 			type: mongoose.Schema.ObjectId,
-			required: true,
-			trim: true,
+			ref: 'Organization',
+            required: true,
+            trim: true,
 		},
 		minimumTime: {
 			type: Number,
 			required: false,
-			default: 1
+			default: 30
 		},
 		status: {
 			type: String,
@@ -49,7 +45,11 @@ const placeSchema = mongoose.Schema(
 			default: "out"
 		},
 		time_start: {
-			type: String,
+			type: Number,
+			required: false
+		},
+		time_end: {
+			type: Number,
 			required: false
 		},
 		lastCheckin: {
@@ -59,6 +59,40 @@ const placeSchema = mongoose.Schema(
 		tooLate: {
 			type: Number,
 			required: false
+		},
+		// wifi check
+		wifi: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+		ip_address: {
+			type: String,
+            trim: true,
+			validate(value) {
+				if (!!value && !value.match(/(?:(?:25[0-5]|2[0-4]\d|[01]?\d?\d{1})\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d?\d{1})/g)) {
+					throw new Error('BE: Địa chỉ IP không chính xác!');
+				}
+			},
+		},
+		wifi_name: {
+			type: String,
+            trim: true,
+		},
+		// mac check
+		mac: {
+            type: Boolean,
+            required: true,
+            default: false
+        },
+		mac_address: {
+			type: String,
+			trim: true,
+			validate(value) {
+				if (!!value && !value.match(/^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/)) {
+					throw new Error('BE: Địa chỉ MAC không chính xác!');
+				}
+			}
 		},
 	},
   {

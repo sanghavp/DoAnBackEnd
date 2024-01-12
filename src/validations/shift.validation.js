@@ -20,7 +20,8 @@ const getShifts = {
   query: Joi.object().keys(
       {
 		page: Joi.number(),
-		limit: Joi.number()
+		limit: Joi.number(),
+    name: Joi.string(),
 	}
   ),
 };

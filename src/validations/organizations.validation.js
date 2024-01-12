@@ -8,8 +8,11 @@ const createOrganizations = {
     fullname: Joi.string(),
     email: Joi.string(),
     phone: Joi.string(),
-    leader: Joi.string(),
-    place: Joi.array(),
+    // leader: Joi.object().keys({
+    //   id: Joi.string().custom(objectId),
+    //   name: Joi.string()
+    // }),
+    leader: Joi.string().custom(objectId),
   }),
 };
 
@@ -20,8 +23,13 @@ const getOrganizationss = {
     fullname: Joi.string(),
     email: Joi.string(),
     phone: Joi.string(),
-    leader: Joi.string(),
-    place: Joi.array(),
+    // leader: Joi.object().keys({
+    //   id: Joi.string().custom(objectId),
+    //   name: Joi.string()
+    // }),
+    leader: Joi.string().custom(objectId),
+    page: Joi.number(),
+    limit: Joi.number(),
   }),
 };
 
@@ -42,8 +50,11 @@ const updateOrganizations = {
       fullname: Joi.string(),
       email: Joi.string(),
       phone: Joi.string(),
-      leader: Joi.string(),
-      place: Joi.array(),
+      // leader: Joi.object().keys({
+      //   id: Joi.string().custom(objectId),
+      //   name: Joi.string()
+      // }),
+      leader: Joi.string().custom(objectId),
     })
     .min(1),
 };

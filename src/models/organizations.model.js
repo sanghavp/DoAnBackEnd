@@ -1,6 +1,19 @@
 const mongoose = require('mongoose');
 const { toJSON, paginate } = require('./plugins');
 
+const userSchema =  mongoose.Schema (
+	{
+		id: {
+			type: mongoose.Schema.ObjectId,
+			trim: true,
+		},
+		name: {
+			type: String,
+            trim: true,
+        },
+	}
+)
+
 const organizationsSchema = mongoose.Schema(
   {
 		code: {
@@ -31,16 +44,16 @@ const organizationsSchema = mongoose.Schema(
 			// required: true,
 			trim: true,
 		},
+		// leader: userSchema
 		leader: {
-			type: String,
-			required: true,
-			trim: true,
-		},
-		place: {
-			type: Array,
-			// required: true,
-			trim: true,
-		},
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+		// leader_id: {
+		// 	type: mongoose.Schema.Types.ObjectId,
+        //     ref: 'User',
+		// 	required: false,
+		// },
 	},
   {
     timestamps: true,

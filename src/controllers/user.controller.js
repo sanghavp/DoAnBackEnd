@@ -10,9 +10,10 @@ const createUser = catchAsync(async (req, res) => {
 });
 
 const getUsers = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['name', 'role']);
+  const filter = pick(req.query, ['username', 'role', 'org_ids']);
+  console.log("req", req.user.id);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await userService.queryUsers(filter, options);
+  const result = await userService.queryUsers(filter, Object.assign({user: req.user},options));
   res.send(result);
 });
 
@@ -24,8 +25,22 @@ const getUser = catchAsync(async (req, res) => {
   res.send(user);
 });
 
+const getCurrentUser = catchAsync(async (req, res) => {
+  // console.log("req.user", req.user);
+  const user = await userService.getUserById(req.user._id);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  res.send(user);
+})
+
 const updateUser = catchAsync(async (req, res) => {
   const user = await userService.updateUserById(req.params.userId, req.body);
+  res.send(user);
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+  const user = await userService.updateUserById(req.params.userId, {passwword: "password123"});
   res.send(user);
 });
 
@@ -38,6 +53,8 @@ module.exports = {
   createUser,
   getUsers,
   getUser,
+  getCurrentUser,
   updateUser,
   deleteUser,
+  resetPassword,
 };

@@ -10,7 +10,7 @@ const createCheckin = catchAsync(async (req, res) => {
 });
 
 const getCheckins = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['userId', 'time', 'place', 'status', 'user_name', 'ca']);
+  const filter = pick(req.query, ['userId', 'time', 'place', 'status', 'username', 'ca']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await checkinService.queryCheckins(filter, options);
   res.send(result);

@@ -10,7 +10,7 @@ const createPlace = catchAsync(async (req, res) => {
 });
 
 const getPlaces = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ['time', 'lat', 'long', 'name', 'r', 'address', 'orgId)']);
+  const filter = pick(req.query, ['time', 'lat', 'long', 'name', 'r', 'address', 'org_id']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
   const result = await placeService.queryPlaces(filter, options);
   res.send(result);

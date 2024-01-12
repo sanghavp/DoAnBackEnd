@@ -9,12 +9,12 @@ const router = express.Router();
 router
   .route('/')
   .post(auth('manageOrganizations'), validate(organizationsValidation.createOrganizations), organizationsController.createOrganizations)
-  .get( validate(organizationsValidation.getOrganizationss), organizationsController.getOrganizationss);
+  .get(auth('getOrganizations'), validate(organizationsValidation.getOrganizationss), organizationsController.getOrganizationss);
 
 router
   .route('/:organizationsId')
-  .get(auth('getOrganizationss'), validate(organizationsValidation.getOrganizations), organizationsController.getOrganizations)
-  .patch(auth('manageOrganizations'), validate(organizationsValidation.updateOrganizations), organizationsController.updateOrganizations)
+  .get(auth('getOrganizations'), validate(organizationsValidation.getOrganizations), organizationsController.getOrganizations)
+  .put(auth('manageOrganizations'), validate(organizationsValidation.updateOrganizations), organizationsController.updateOrganizations)
   .delete(auth('manageOrganizations'), validate(organizationsValidation.deleteOrganizations), organizationsController.deleteOrganizations);
 
 module.exports = router;

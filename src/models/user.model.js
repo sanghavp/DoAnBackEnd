@@ -8,15 +8,20 @@ const userSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true, 
       trim: true,
     },
-    user_name: {
+    username: {
       type: String,
       lowercase: true,
       trim: true,
       required: true,
-      minlength: 4
+      minlength: 4,
+      validate(value) {
+        if(!/^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*$/.test(value)){
+          throw new Error('Username chỉ được bao gồm kí tự số và chữ!')
+        }
+      }
     },
     phone: {
       type: String,
@@ -49,9 +54,10 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the toJSON plugin
     },
-    orgId: {
-      type: mongoose.Schema.ObjectId,
-      // required: true
+    org_ids: {
+      type: [mongoose.Schema.ObjectId],
+      required: false,
+      ref: 'Organizations'
     },
     role: {
       type: String,
@@ -74,8 +80,8 @@ userSchema.plugin(paginate);
  * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
  * @returns {Promise<boolean>}
  */
-userSchema.statics.isUserNameTaken = async function (user_name, excludeUserId) {
-  const user = await this.findOne({ user_name, _id: { $ne: excludeUserId } });
+userSchema.statics.isUserNameTaken = async function (username, excludeUserId) {
+  const user = await this.findOne({ username, _id: { $ne: excludeUserId } });
   return !!user;
 };
 

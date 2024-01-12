@@ -1,50 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const divisionValidation = require('../../validations/division.validation');
+const divisionController = require('../../controllers/division.controller');
 
 const router = express.Router();
 
 router
   .route('/')
-  .post(auth('manageUsers'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+  .post(auth('manageDivisions'), validate(divisionValidation.createDivision), divisionController.createDivision)
+  .get(auth('getDivisions'), validate(divisionValidation.getDivisions), divisionController.getDivisions);
 
 router
-  .route('/current')
-  .get(auth('getCurrentUser'), validate(userValidation.getCurentUser), userController.getCurrentUser);
-
-router
-  .route('/:userId')
-  .get(auth('getUsers'), validate(userValidation.getUser), userController.getUser)
-  .put(auth('manageUsers'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('manageUsers'), validate(userValidation.deleteUser), userController.deleteUser);
-
-router
-  .route('/change-password/:userId')
-  .put(auth('resetPassword'), validate(userValidation.changePassword), userController.updateUser);
-
-router
-  .route('/reset-password/:userId')
-  .put(auth('resetPassword'), validate(userValidation.changePassword), userController.resetPassword);
+  .route('/:divisionId')
+  .get(auth('getDivisions'), validate(divisionValidation.getDivision), divisionController.getDivision)
+  .patch(auth('manageDivisions'), validate(divisionValidation.updateDivision), divisionController.updateDivision)
+  .delete(auth('manageDivisions'), validate(divisionValidation.deleteDivision), divisionController.deleteDivision);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management and retrieval
+ *   name: Divisions
+ *   description: Division management and retrieval
  */
 
 /**
  * @swagger
- * /users:
+ * /divisions:
  *   post:
- *     summary: Create a user
- *     description: Only admins can create other users.
- *     tags: [Users]
+ *     summary: Create a division
+ *     description: Can create divisions.
+ *     tags: [Divisions]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -54,73 +42,77 @@ module.exports = router;
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - email
- *               - password
- *               - role
+ *               - user
+ *               - type
+ *               - manufacturer
+ *               - model
  *             properties:
- *               name:
+ *               user:
  *                 type: string
- *               email:
+ *               type:
  *                 type: string
- *                 format: email
- *                 description: must be unique
- *               password:
+ *                 description: division type (car, var, bike, etc...)
+ *               manufacturer:
  *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
- *               role:
+ *               model:
+ *                 type: string
+ *                 description: division model (308, Demio, Aqua, etc...)
+ *               numberplate:
  *                  type: string
- *                  enum: [user, admin]
+ *               makeyear:
+ *                  type: string
+ *               registeryear:
+ *                  type: string
+ *               capacity:
+ *                  type: string
+ *               fuel:
+ *                  type: string
+ *               color:
+ *                  type: string
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
- *               role: user
+ *               user: (User ID)
+ *               type: car
+ *               manufacturer: Mazda
+ *               model: Demio
+ *               numberplate: KM-1898
+ *               makeyear: 2007
+ *               registeryear: 2011
+ *               capacity: 5
+ *               fuel: Petrol
+ *               color: Red
  *     responses:
  *       "201":
  *         description: Created
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Division'
  *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
+ *         $ref: '#/components/responses/Duplicate'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all users
- *     description: Only admins can retrieve all users.
- *     tags: [Users]
+ *     summary: Get all divisions
+ *     description: Retrieve all divisions.
+ *     tags: [Divisions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
- *         name: name
+ *         name: user
  *         schema:
  *           type: string
- *         description: User name
- *       - in: query
- *         name: role
- *         schema:
- *           type: string
- *         description: User role
- *       - in: query
- *         name: sortBy
- *         schema:
- *           type: string
- *         description: sort by query in the form of field:desc/asc (ex. name:asc)
+ *         description: User id
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of users
+ *         description: Maximum number of divisions
  *       - in: query
  *         name: page
  *         schema:
@@ -139,7 +131,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: '#/components/schemas/Division'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -160,11 +152,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /users/{id}:
+ * /divisions/{id}:
  *   get:
- *     summary: Get a user
- *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Users]
+ *     summary: Get a division
+ *     description: fetch Divisions by id
+ *     tags: [Divisions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -173,14 +165,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Division id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Division'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -189,9 +181,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   patch:
- *     summary: Update a user
- *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Users]
+ *     summary: Update a division
+ *     description: Update divisions.
+ *     tags: [Divisions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -200,7 +192,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Division id
  *     requestBody:
  *       required: true
  *       content:
@@ -208,30 +200,48 @@ module.exports = router;
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               user:
  *                 type: string
- *               email:
+ *               type:
  *                 type: string
- *                 format: email
- *                 description: must be unique
- *               password:
+ *                 description: division type (car, var, bike, etc...)
+ *               manufacturer:
  *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
+ *               model:
+ *                 type: string
+ *                 description: division model (308, Demio, Aqua, etc...)
+ *               numberplate:
+ *                  type: string
+ *               makeyear:
+ *                  type: string
+ *               registeryear:
+ *                  type: string
+ *               capacity:
+ *                  type: string
+ *               fuel:
+ *                  type: string
+ *               color:
+ *                  type: string
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               password: password1
+ *               user: (User ID)
+ *               type: car
+ *               manufacturer: Mazda
+ *               model: Demio
+ *               numberplate: KM-1898
+ *               makeyear: 2007
+ *               registeryear: 2011
+ *               capacity: 5
+ *               fuel: Petrol
+ *               color: Red
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Division'
  *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
+ *         $ref: '#/components/responses/Duplicate'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -240,9 +250,9 @@ module.exports = router;
  *         $ref: '#/components/responses/NotFound'
  *
  *   delete:
- *     summary: Delete a user
- *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Users]
+ *     summary: Delete a division
+ *     description: Delete divisions.
+ *     tags: [Divisions]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -251,7 +261,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Division id
  *     responses:
  *       "200":
  *         description: No content

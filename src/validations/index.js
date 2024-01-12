@@ -1,8 +1,10 @@
 module.exports.authValidation = require('./auth.validation');
 module.exports.userValidation = require('./user.validation');
-module.exports.PlaceValidation = require("./Place.validation");
+module.exports.PlaceValidation = require("./place.validation");
 module.exports.checkinValidation = require("./checkin.validation");
 module.exports.organizationsValidation = require("./organizations.validation");
 module.exports.placeValidation = require("./place.validation");
 module.exports.scanQRValidation = require("./scanQR.validation");
 module.exports.shiftValidation = require("./shift.validation");
+module.exports.timesheetValidation = require("./timesheet.validation");
+module.exports.divisionValidation = require("./division.validation");

@@ -22,8 +22,24 @@ const password = (value, helpers) => {
   return value;
 };
 
+const mac = (value, helpers) => {
+  if (!value.match(/^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/)) {
+    return helpers.message('"{{#label}}" must be a valid MAC address');
+  }
+  return value;
+}
+
+const ipAddress = (value, helper) => {
+  if (!value.match(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/)) {
+    return helper.message('"{{#label}}" must be a valid IP address');
+  }
+  return value;
+}
+
 module.exports = {
   objectId,
   password,
   phoneNumber,
+  mac,
+  ipAddress
 };

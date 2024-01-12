@@ -14,7 +14,7 @@ router
 router
   .route('/:placeId')
   .get(auth('getPlaces'), validate(placeValidation.getPlace), placeController.getPlace)
-  .patch(auth('managePlaces'), validate(placeValidation.updatePlace), placeController.updatePlace)
+  .put(auth('managePlaces'), validate(placeValidation.updatePlace), placeController.updatePlace)
   .delete(auth('managePlaces'), validate(placeValidation.deletePlace), placeController.deletePlace);
 
 module.exports = router;

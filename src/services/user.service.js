@@ -2,13 +2,19 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 
+roles = {
+  admin: ["admin", "manager", "leader", "user"],
+  manager: ["manager", "leader", "user"] ,
+  leader: ["leader", "user"],
+}
+
 /**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isUserNameTaken(userBody.user_name)) {
+  if (await User.isUserNameTaken(userBody.username)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'user name already taken');
   }
   return User.create(userBody);
@@ -24,6 +30,21 @@ const createUser = async (userBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (filter, options) => {
+  
+  // lấy thông tin user theo nhiều role
+  if ( filter.role) {
+    filter.role = { $in: filter.role.split(',') };
+  }else {
+    filter.role = roles[`${options.user.role}`]
+  }
+  // console.log(filter.role, options.user);
+
+  // lấy thông tin user của nhiều tổ chức
+  if ( filter.org_ids) {
+    filter.org_ids = { $in: filter.org_ids.split(',') };
+  }else {
+    filter.org_ids = { $in: options.user.org_ids };
+  }
   const users = await User.paginate(filter, options);
   return users;
 };
@@ -43,8 +64,8 @@ const getUserById = async (id) => {
  * @param {string} email
  * @returns {Promise<User>}
  */
-const getUserByUserName = async (user_name) => {
-  return User.findOne({ user_name });
+const getUserByUserName = async (username) => {
+  return User.findOne({ username });
 };
 
 /**
@@ -58,11 +79,12 @@ const updateUserById = async (userId, updateBody) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  if (updateBody.user_name && (await User.isUserNameTaken(updateBody.email, userId))) {
+  if (updateBody.username && (await User.isUserNameTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Ten tai khoan khong dung!');
   }
   Object.assign(user, updateBody);
   await user.save();
+  console.log("user seervice");
   return user;
 };
 

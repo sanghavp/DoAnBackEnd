@@ -7,6 +7,8 @@ const checkinRoute = require("./checkin.route");
 const organizationsRoute = require("./organizations.route");
 const scanQRRoute = require('./scanQR.route');
 const shiftRoute = require("./shift.route");
+const divisionRoute = require("./division.route");
+const timesheetRoute = require("./timesheet.route");
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -39,6 +41,14 @@ const defaultRoutes = [
   {
     path: "/shift",
     route: shiftRoute,
+  },
+  {
+    path: "/division",
+    route: divisionRoute,
+  },
+  {
+    path: "/timesheet",
+    route: timesheetRoute,
   },
 ];
 
